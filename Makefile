@@ -14,7 +14,7 @@ CXX := g++
 
 # ========== Core Targets ==========
 
-.PHONY: all build run clean rebuild test format docker docker-run docker-clean help
+.PHONY: all build run clean rebuild test docker docker-run docker-clean help
 
 all: build
 
@@ -27,6 +27,7 @@ build:
 
 run: build
 	@echo "🚀 Running $(TARGET)..."
+	@echo ""
 	./$(BUILD_DIR)/$(TARGET)
 
 clean:
@@ -42,12 +43,7 @@ test:
 	@echo "Running test stub..."
 	$(CXX) -std=c++$(CXX_STD) $(TEST_DIR)/test_rotate.cpp -I$(INCLUDE_DIR) -o $(BUILD_DIR)/test_rotate && $(BUILD_DIR)/test_rotate
 
-## 🎨 Format all .cpp and .hpp using clang-format (if available)
-format:
-	@echo "🎨 Formatting source files..."
-	clang-format -i $(shell find $(SRC_DIR) $(INCLUDE_DIR) -name '*.cpp' -o -name '*.hpp')
-
-dev: format test run
+dev: test run
 
 
 # ========== Docker Targets ==========
