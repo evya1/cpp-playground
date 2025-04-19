@@ -1,19 +1,15 @@
-FROM gcc:12
+FROM gcc:12-slim
 
-# Install build tools and Eigen
 RUN apt-get update && apt-get install -y \
     cmake \
     git \
-    libeigen3-dev
+    libeigen3-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy the full project into the container
 COPY . .
 
-# Configure and build
 RUN cmake -Bbuild -H. && cmake --build build
 
-# Run the compiled binary
 CMD ["./build/cpp_playground"]
