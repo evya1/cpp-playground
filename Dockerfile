@@ -1,15 +1,20 @@
-FROM gcc:12-slim
+# === STAGE 1: Build stage ===
+FROM debian:bookworm-slim AS builder
 
 RUN apt-get update && apt-get install -y \
+    build-essential \
     cmake \
-    git \
-    libeigen3-dev && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    libeigen3-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
 COPY . .
 
 RUN cmake -Bbuild -H. && cmake --build build
 
-CMD ["./build/cpp_playground"]
+# === STAGE 2: Runtime stage ===
+FROM debian:bookworm-slim
+
+COPY --from=builder /app/build/cpp_playground /cpp_playground
+
+CMD ["/cpp_playground"]

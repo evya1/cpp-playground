@@ -3,15 +3,25 @@
 #include "rotate.hpp"
 
 int main() {
+    using Eigen::MatrixXd;
+    using Eigen::VectorXd;
     using std::cout;
     using std::endl;
-    Eigen::Vector2d original(1, 0);
-    double angle = M_PI / 4; // 45 degrees
+    VectorXd v(2);
+    v << 1, 0;
+    std::cout << "v = \n" << v[1] << std::endl;
 
-    Eigen::Vector2d rotated = rotateVector(original, angle);
+    VectorXd rotated = rotateVector(v, M_PI_4);
 
-    cout << "Original vector: " << original.transpose() << endl;
+    cout << "Original vector: " << v.transpose() << endl;
     cout << "Rotated vector:  " << rotated.transpose() << endl;
+
+    MatrixXd m(2,2);
+    m(0,0) = 3;
+    m(1,0) = 2.5;
+    m(0,1) = -1;
+    m(1,1) = m(1,0) + m(0,1);
+    cout << m << endl;
 
     return 0;
 }
